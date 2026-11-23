@@ -3,44 +3,23 @@
 
 services:
   # ---------------------------------------------------------------------------
-  # 1. Backend Web Service (Node.js API)
+  # Unified Production Web Service (Node.js API + Static React Frontend)
   # ---------------------------------------------------------------------------
   - type: web
-    name: mern-blog-backend
+    name: mern-blog-app
     runtime: node
-    rootDir: backend
     plan: free
     region: oregon
-    buildCommand: npm install
-    startCommand: node src/server.js
+    buildCommand: npm run build
+    startCommand: npm start
     healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 5000
+        value: 10000
       - key: MONGO_URI
-        sync: false # Set via Render Dashboard (MongoDB Atlas connection string)
+        sync: false # Set in Render Dashboard: your MongoDB Atlas connection string
       - key: CORS_ORIGIN
-        sync: false # Set to your deployed frontend URL (e.g. https://mern-blog-frontend.onrender.com)
-
-  # ---------------------------------------------------------------------------
-  # 2. Frontend Static Site (React Single Page App)
-  # ---------------------------------------------------------------------------
-  - type: web
-    name: mern-blog-frontend
-    runtime: static
-    rootDir: frontend
-    plan: free
-    region: oregon
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    pullRequestPreviewsEnabled: true
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_BASE_URL
-        sync: false # Set to your deployed backend URL + /api (e.g. https://mern-blog-backend.onrender.com/api)
+        value: "*"
