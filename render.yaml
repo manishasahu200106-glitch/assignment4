@@ -11,7 +11,7 @@ services:
     rootDir: backend
     plan: free
     region: oregon
-    buildCommand: npm ci
+    buildCommand: npm install
     startCommand: node src/server.js
     healthCheckPath: /health
     autoDeploy: true
@@ -21,7 +21,7 @@ services:
       - key: PORT
         value: 5000
       - key: MONGO_URI
-        sync: false # Set via Render Dashboard (e.g. MongoDB Atlas connection string)
+        sync: false # Set via Render Dashboard (MongoDB Atlas connection string)
       - key: CORS_ORIGIN
         sync: false # Set to your deployed frontend URL (e.g. https://mern-blog-frontend.onrender.com)
 
@@ -34,7 +34,7 @@ services:
     rootDir: frontend
     plan: free
     region: oregon
-    buildCommand: npm ci && npm run build
+    buildCommand: npm install && npm run build
     staticPublishPath: dist
     pullRequestPreviewsEnabled: true
     routes:
